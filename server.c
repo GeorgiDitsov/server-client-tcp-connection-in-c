@@ -9,19 +9,12 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <time.h>
+#include "grave.h"
 
 #define FILE_PATH "graves.dat"
 #define STRING_SIZE 100
 #define PORT 8081
 #define SA struct sockaddr
-
-typedef struct Grave
-{
-  int64_t row, col;
-  char info[STRING_SIZE];
-  bool reservedFor15years, reservedForever;
-  time_t passedAway;
-} Grave;
 
 // example function, which writes some structures of type Grave in file graves.dat
 void writeAllGravesInFile(void)

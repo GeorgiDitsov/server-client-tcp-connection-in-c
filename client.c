@@ -10,19 +10,12 @@
 #include <netdb.h>
 #include <time.h>
 #include <math.h>
+#include "grave.h"
 
 #define STRING_SIZE 100
 #define PORT 8081
 #define SECONDS_IN_DAY 86400
 #define SA struct sockaddr
-
-typedef struct Grave
-{
-  int64_t row, col;
-  char info[STRING_SIZE];
-  bool reservedFor15years, reservedForever;
-  time_t passedAway;
-} Grave;
 
 // function which gets client input and sends it to server, then it prints the received data from server in console
 void getGrave(int sockfd)
