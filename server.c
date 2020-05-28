@@ -39,15 +39,9 @@ void writeAllGravesInFile(void)
     close(fd);
 }
 
-// function which opens file in read-only mode, and search for specific grave by client's entered row and column
-void getRequestedGrave(int sockfd)
+// function which finds requested grave by its row and column, and sends it back to the client
+void findRequestedGrave(int row, int col, int sockfd)
 {
-    int row, col;
-    char buff[BUFF_SIZE];
-    read(sockfd, buff, sizeof(buff));
-    printf("Client sent = %s", buff);
-    sscanf(buff, "%d %d", &row, &col);
-
     int fileDescriptor = open(FILE_PATH, O_RDONLY);
     if(fileDescriptor == -1)
     {
@@ -69,6 +63,19 @@ void getRequestedGrave(int sockfd)
     }
 
     close(fileDescriptor);
+}
+
+// function which receives client request about grave's row and column
+void receiveRequest(int sockfd)
+{
+    int row, col;
+    char buff[BUFF_SIZE];
+
+    read(sockfd, buff, sizeof(buff));
+    printf("Client sent = %s", buff);
+    sscanf(buff, "%d %d", &row, &col);
+
+    findRequestedGrave(row, col, sockfd);
 }
 
 // starts the server on port localhost:8081 and listens for clients to connect
@@ -120,7 +127,7 @@ int main(void)
             puts("Server acccept the client...");
         }
 
-        getRequestedGrave(connfd);
+        receiveRequest(connfd);
     }
 
     close(sockfd);

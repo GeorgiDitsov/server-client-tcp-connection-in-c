@@ -36,7 +36,7 @@ void printGraveInformation(struct Grave grave)
 }
 
 // function which gets client input about grave's row and column, sends it to the server and then receives Grave structure
-void getGrave(int sockfd)
+void sendRequest(int sockfd)
 {
     struct Grave grave;
     char buff[BUFF_SIZE];
@@ -79,7 +79,7 @@ int main(void)
         puts("Connected to the server...");
     }
 
-    getGrave(sockfd);
+    sendRequest(sockfd);
 
     close(sockfd);
 }
