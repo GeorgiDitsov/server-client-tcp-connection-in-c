@@ -19,7 +19,7 @@
 #define SA struct sockaddr
 
 // function which creates client socket, assigns IP and PORT, and attempts to connect with server socket
-int attemptConnnectionToServer(int sockfd, int connfd)
+int attemptConnnectionToServer(int sockfd)
 {
     struct sockaddr_in cli, servaddr = {
         .sin_family = AF_INET,
@@ -86,6 +86,6 @@ void sendRequest(int sockfd)
 // starts the client program
 int main(void)
 {
-	int sockfd, connfd;
-    sendRequest(attemptConnnectionToServer(sockfd, connfd));
+	int sockfd;
+    sendRequest(attemptConnnectionToServer(sockfd));
 }
