@@ -12,7 +12,7 @@
 #include <math.h>
 #include "grave.h"
 
-#define STRING_SIZE 100
+#define BUFF_SIZE 100
 #define PORT 8081
 #define SECONDS_IN_DAY 86400
 #define SA struct sockaddr
@@ -21,7 +21,7 @@
 void getGrave(int sockfd)
 {
     struct Grave grave;
-    char buff[STRING_SIZE];
+    char buff[BUFF_SIZE];
     int n = 0;
 
     puts("Enter your searched grave row and column:");

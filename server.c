@@ -12,7 +12,7 @@
 #include "grave.h"
 
 #define FILE_PATH "graves.dat"
-#define STRING_SIZE 100
+#define BUFF_SIZE 100
 #define PORT 8081
 #define SA struct sockaddr
 
@@ -43,7 +43,7 @@ void writeAllGravesInFile(void)
 void getRequestedGrave(int sockfd)
 {
     int row, col;
-    char buff[STRING_SIZE];
+    char buff[BUFF_SIZE];
     read(sockfd, buff, sizeof(buff));
     printf("Client sent = %s", buff);
     sscanf(buff, "%d %d", &row, &col);
