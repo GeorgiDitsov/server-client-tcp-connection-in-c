@@ -14,8 +14,37 @@
 
 #define BUFF_SIZE 100
 #define PORT 8081
+#define INET_ADDRESS "127.0.0.1"
 #define SECONDS_IN_DAY 86400
 #define SA struct sockaddr
+
+
+int attemptConnnectionToServer(int sockfd, int connfd)
+{
+    struct sockaddr_in cli, servaddr = {
+        .sin_family = AF_INET,
+        .sin_addr.s_addr = inet_addr(INET_ADDRESS),
+        .sin_port = htons(PORT)
+	};
+
+	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (sockfd == -1) {
+		puts("Socket creation failed...");
+		exit(0);
+	}
+	else {
+        puts("Socket successfully created...");
+    }
+
+	if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr)) != 0) {
+		puts("Connection with the server failed...");
+		exit(0);
+	}
+	else {
+        puts("Connected to the server...");
+    }
+    return sockfd;
+}
 
 // function, which prints all information about given grave
 void printGraveInformation(struct Grave grave)
@@ -49,6 +78,8 @@ void sendRequest(int sockfd)
     write(sockfd, buff, sizeof(buff));
     recv(sockfd, &grave, sizeof(grave), 0);
 
+    close(sockfd);
+
     printGraveInformation(grave);
 }
 
@@ -56,30 +87,5 @@ void sendRequest(int sockfd)
 int main(void)
 {
 	int sockfd, connfd;
-	struct sockaddr_in cli, servaddr = {
-        .sin_family = AF_INET,
-        .sin_addr.s_addr = inet_addr("127.0.0.1"),
-        .sin_port = htons(PORT)
-	};
-
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd == -1) {
-		puts("Socket creation failed...");
-		exit(0);
-	}
-	else {
-        puts("Socket successfully created...");
-    }
-
-	if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr)) != 0) {
-		puts("Connection with the server failed...");
-		exit(0);
-	}
-	else {
-        puts("Connected to the server...");
-    }
-
-    sendRequest(sockfd);
-
-    close(sockfd);
+    sendRequest(attemptConnnectionToServer(sockfd, connfd));
 }
