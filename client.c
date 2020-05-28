@@ -17,7 +17,25 @@
 #define SECONDS_IN_DAY 86400
 #define SA struct sockaddr
 
-// function which gets client input and sends it to server, then it prints the received data from server in console
+// function, which prints all information about given grave
+void printGraveInformation(struct Grave grave)
+{
+    puts("Grave information:");
+    printf("Row = %d\n", grave.row);
+    printf("Column = %d\n", grave.col);
+    printf("Info = %s\n", grave.info);
+    printf("Reserved for 15 years = %s\n", grave.reservedFor15years ? "yes" : "no");
+    printf("Reserved forever = %s\n", grave.reservedForever ? "yes" : "no");
+    if(grave.passedAway > 0)
+    {
+        time_t now = time(NULL);
+        double diffInSeconds = difftime(now, grave.passedAway);
+        printf("Passed away on %s", asctime(localtime(&grave.passedAway)));
+        printf("%.0f days after death", round(diffInSeconds/SECONDS_IN_DAY));
+    }
+}
+
+// function which gets client input about grave's row and column, sends it to the server and then receives Grave structure
 void getGrave(int sockfd)
 {
     struct Grave grave;
@@ -31,19 +49,7 @@ void getGrave(int sockfd)
     write(sockfd, buff, sizeof(buff));
     recv(sockfd, &grave, sizeof(grave), 0);
 
-    puts("Grave information:");
-    printf("Row = %d\n", grave.row);
-    printf("Column = %d\n", grave.col);
-    printf("Info = %s\n", grave.info);
-    printf("Reserved for 15 years = %s\n", grave.reservedFor15years ? "yes" : "no");
-    printf("Reserved forever = %s\n", grave.reservedForever ? "yes" : "no");
-    if(grave.passedAway > 0)
-    {
-        time_t now = time(NULL);
-        double diffInSeconds = difftime(now, grave.passedAway);
-        printf("Passed away on %s", asctime(localtime(&grave.passedAway)));
-        printf("%d days after death", floor(diffInSeconds/SECONDS_IN_DAY));
-    }
+    printGraveInformation(grave);
 }
 
 // starts the client program and tries to connect to server on port localhost:8081
