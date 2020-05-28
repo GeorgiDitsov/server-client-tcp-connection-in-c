@@ -14,16 +14,16 @@
 
 #define BUFF_SIZE 100
 #define PORT 8081
-#define INET_ADDRESS "127.0.0.1"
+#define IP_ADDRESS "127.0.0.1"
 #define SECONDS_IN_DAY 86400
 #define SA struct sockaddr
 
-
+// function which creates client socket, assigns IP and PORT, and attempts to connect with server socket
 int attemptConnnectionToServer(int sockfd, int connfd)
 {
     struct sockaddr_in cli, servaddr = {
         .sin_family = AF_INET,
-        .sin_addr.s_addr = inet_addr(INET_ADDRESS),
+        .sin_addr.s_addr = inet_addr(IP_ADDRESS),
         .sin_port = htons(PORT)
 	};
 
@@ -83,7 +83,7 @@ void sendRequest(int sockfd)
     printGraveInformation(grave);
 }
 
-// starts the client program and tries to connect to server on port localhost:8081
+// starts the client program
 int main(void)
 {
 	int sockfd, connfd;
